@@ -15,53 +15,37 @@
 <body>
     <div class="wrapper">
         <header class="header">
-            <div class="search">
-            <input type = "search-text" placeholder = "Search" id = "search">
-            <label for = "search-btn">Search</label>
-            </div>
+            <input type = "search" placeholder = "Search" id = "search">
             <div class = "tags">
-                    <div class = "tags-item">Tag1</div>
-                    <div class = "tags-item">Tag2</div>
-                    <div class = "tags-item">tag3</div>
+                <input type = "checkbox" id = "business" class = "checkbox">
+                <label for = "business" class = "tags-item">#business</label>
+
+                <input type = "checkbox" id = "politics" class = "checkbox">
+                <label for = "politics" class = "tags-item">#politics</label>
+
+                <input type = "checkbox" id = "sport" class = "checkbox">
+                <label for ="sport" class = "tags-item">#sport</label>
+
+                <input type = "checkbox" id = "food" class = "checkbox">
+                <label for = "food" class = "tags-item">#food</label>
+
+                <input type = "checkbox" id = "tech" class = "checkbox">
+                <label for = "tech" class = "tags-item">#tech</label>
+
+                <input type = "checkbox" id = "culture" class = "checkbox">
+                <label for = "culture" class = "tags-item">#culture</label>
+
+                <input type = "checkbox" id = "snowbiz" class = "checkbox">
+                <label for = "snowbiz" class = "tags-item">#snowbiz</label>
+
+            </div>
+            <div class="sort">
+                <h4 class = "sort-name">Sort by date:</h4>
+                <i class="fas fa-arrow-up"></i><input type = "radio" name = "radio" id = "up">
+                <i class="fas fa-arrow-down"></i></i><input type = "radio" name = "radio" id = "down">
             </div>
         </header>
-        <main class="main">
-            <article class = "post">
-                <img src = "#" alt = "post-pic">
-                <h2 class = "post-name">Post1</h2>
-                <div class = "post-date">12.03.2018</div>
-                <div class = "tags">
-                    <div class = "tags-item">Tag1</div>
-                    <div class = "tags-item">Tag2</div>
-                    <div class = "tags-item">tag3</div>
-                </div>
-                <p class = "post-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, iste magni aspernatur ipsam ab suscipit eum ut aliquam. Voluptate, fuga! Perspiciatis dolorum culpa deleniti quas dignissimos nesciunt optio quis unde!</p>
-
-            </article>
-            <article class = "post">
-                    <img src = "#" alt = "post-pic">
-                    <h2 class = "post-name">Post1</h2>
-                    <div class = "post-date">12.03.2018</div>
-                    <div class = "tags">
-                        <div class = "tags-item">Tag1</div>
-                        <div class = "tags-item">Tag2</div>
-                        <div class = "tags-item">tag3</div>
-                    </div>
-                    <p class = "post-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, iste magni aspernatur ipsam ab suscipit eum ut aliquam. Voluptate, fuga! Perspiciatis dolorum culpa deleniti quas dignissimos nesciunt optio quis unde!</p>
-    
-                </article>
-                <article class = "post">
-                        <img src = "#" alt = "post-pic">
-                        <h2 class = "post-name">Post1</h2>
-                        <div class = "post-date">12.03.2018</div>
-                        <div class = "tags">
-                            <div class = "tags-item">Tag1</div>
-                            <div class = "tags-item">Tag2</div>
-                            <div class = "tags-item">tag3</div>
-                        </div>
-                        <p class = "post-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, iste magni aspernatur ipsam ab suscipit eum ut aliquam. Voluptate, fuga! Perspiciatis dolorum culpa deleniti quas dignissimos nesciunt optio quis unde!</p>
-        
-                    </article>
+        <main id = "post-container">
         </main>
     </div>
     <script src="dist/js/script.js"></script>

@@ -23,21 +23,76 @@ body {
 
 .tags {
     display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+
+    &-item {
+
+        background-color: lightgray;
+        border-radius: 5px;
+        padding: 3px 5px;
+        margin:10px;
+        box-sizing: border-box;
+        font-size: 12px;
+
+    }
 }
 
-.main {
+input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox:checked + .tags-item {
+    background-color: red;
+}
+
+.sort {
+    display: flex;
+
+    &-name {
+        margin:0 10px 0 0;
+    }
+}
+
+#post-container {
 
     padding: 30px;
 
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    grid-gap: 10px;
+    grid-gap: 20px;
 }
 
 .post {
-    width: 300px;
+    min-width: 200px;
+    padding: 20px;
     background-color: #fff;
-    border:1px solid lightgrey;
-    box-shadow: 2px 2px 2px lightgrey;
+    border:1px solid white;
+    box-shadow: 2px 2px 2px rgb(230, 229, 229);
+    position: relative;
 
+    &-name {
+        text-align: center;
+    }
+
+    &-date {
+        text-align: right;
+        margin-bottom: 10px;
+
+    }
+
+    &-body {
+        text-align: justify;
+    }
+
+}
+
+.btn-delete {
+    position: absolute;
+    top:0;
+    right:10px;
+    color: red;
+    font-size: 30px;
 }
