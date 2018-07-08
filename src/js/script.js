@@ -3,14 +3,30 @@ const postContainer = document.getElementById("post-container");
 const newest = document.getElementById('newest');
 const oldest = document.getElementById('oldest');
 const deleteButtons = document.getElementsByClassName("btn-delete");
-let selectedTags = document.querySelectorAll(".checkbox:checked");
+const sortTags = document.getElementsByClassName('checkbox');
+// let selectedTags = document.querySelectorAll(".checkbox:checked");
 
 let dataStore = [];
 let currentState = [];
 let currentSortType = "newest";
 
+let selectedSort = [];
 
-
+for(let i = 0; i < sortTags.length ; i++) {
+    sortTags[i].addEventListener('change', function(e) {
+        if (_.isEmpty(currentState)) return;
+        
+        if (e.target.checked && !selectedSort.includes(e.target.value)) {
+            selectedSort.push(e.target.value);
+        } else {
+            selectedSort = selectedSort.filter((elem) => elem !== e.target.value);
+        }
+        currentState = sortByTags(currentState, selectedSort, currentSortType);
+        
+        postContainer.innerHTML = '';
+        renderCards(currentState.slice(0, 10));
+    })
+}
 
 fetch('https://api.myjson.com/bins/152f9j')
     .then(response => response.json())
@@ -68,19 +84,17 @@ function deleteListener(e) {
         renderCards(currentState.slice(0, 10));
 }
 
-function sortByDate(arr, sortType) {
-
-    if (sortType == "newest") return arr.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    return arr.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-};
-
-function sortByTag (arr, tags) {
-   for (let i = 0; i<arr.length; i++) {
-       for (let j = 0; j < tags.length; j++) {
-        //    if (arr[i].tags)
+function sortByTags (arr, sortTags, sortDateType) {
+   return arr.sort((a, b) => {
+       let tagsA = _.intersection(sortTags, a.tags.map(tag => tag.toLowerCase()));
+       let tagsB = _.intersection(sortTags, b.tags.map(tag => tag.toLowerCase()));
+       
+       if (tagsA.length === tagsB.length) {
+           if (sortDateType == 'newest') return new Date(b.createdAt) - new Date(a.createdAt);
+           else return new Date(a.createdAt) - new Date(b.createdAt);
        }
-   }
+       return tagsB.length - tagsA.length;
+   })
 }
 
 function main(posts) {
@@ -92,7 +106,7 @@ function main(posts) {
 
     dataStore = _.cloneDeep(posts);
 
-    currentState = sortByDate(dataStore, currentSortType);
+    currentState = sortByTags(dataStore, selectedSort, currentSortType);
     renderCards(currentState.slice(0, 10));
 
     search.addEventListener('input', function (e) {
@@ -112,7 +126,7 @@ function main(posts) {
     newest.addEventListener('change', function (e) {
 
         currentSortType = "newest";
-        currentState = sortByDate(currentState, currentSortType);
+        currentState = sortByTags(currentState, selectedSort, currentSortType);
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
 
@@ -121,7 +135,7 @@ function main(posts) {
     oldest.addEventListener('change', function (e) {
 
         currentSortType = 'oldest';
-        currentState = sortByDate(currentState, currentSortType);
+        currentState = sortByTags(currentState, selectedSort, currentSortType);
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
 
