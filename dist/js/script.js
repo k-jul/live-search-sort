@@ -2,7 +2,11 @@ const search = document.getElementById('search');
 const postContainer = document.getElementById("post-container");
 const newest = document.getElementById('newest');
 const oldest = document.getElementById('oldest');
-let currentChoice = [];
+const deleteButtons = document.getElementsByClassName("btn-delete");
+let selectedTags = document.querySelectorAll(".checkbox:checked");
+
+let currentState = [];
+let currentSortType = "newest";
 
 
 
@@ -21,7 +25,8 @@ function renderCard(postData) {
     let article = document.createElement('article');
     article.classList.add('post');
 
-    article.innerHTML = `<div class = "btn-delete"><i class="fas fa-times"></i></div>
+    article.innerHTML = `<i class="fas fa-times btn-delete"></i>
+
                 <img src = ${postData.image} alt = "post-pic">
                 <h2 class = "post-name">${postData.title}</h2>
                 <div class = "post-date">${new Date(postData.createdAt).toDateString()}</div>
@@ -43,40 +48,69 @@ function renderCards(postsArray) {
     });
 };
 
+function sortByDate(arr, sortType) {
+
+    if (sortType == "newest") return arr.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return arr.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+};
+
+function sortByTag (arr, tags) {
+   for (let i = 0; i<arr.length; i++) {
+       for (let j = 0; j < tags.length; j++) {
+        //    if (arr[i].tags)
+       }
+   }
+}
+
 function main(posts) {
 
-    currentChoice = posts;
+    for(let i = 0; i< posts.length; i++) {
+        posts[i].matchedTags = 0;
+    }
 
-    renderCards(posts.slice(0, 10));
+    currentState = sortByDate(posts, currentSortType);
+    renderCards(currentState.slice(0, 10));
 
     search.addEventListener('input', function (e) {
 
         let searchWord = e.target.value.toLowerCase();
-
-         currentChoice = posts.filter((post) => {
+        let filtered = posts.filter((post) => {
             return post.title.toLowerCase().includes(searchWord)
-
         });
 
+        currentState = sortByDate(filtered, currentSortType);
+ 
         postContainer.innerHTML = '';
-
-        renderCards(currentChoice.slice(0, 10));
+        renderCards(currentState.slice(0, 10));
 
     });
 
     newest.addEventListener('change', function (e) {
-         currentChoice = currentChoice.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-         postContainer.innerHTML = '';
+        currentSortType = "newest";
+        currentState = sortByDate(currentState, currentSortType);
+        postContainer.innerHTML = '';
+        renderCards(currentState.slice(0, 10));
 
-         renderCards(currentChoice.slice(0, 10));
-    })
+    });
 
     oldest.addEventListener('change', function (e) {
-        currentChoice = currentChoice.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
 
+        currentSortType = 'oldest';
+        currentState = sortByDate(currentState, currentSortType);
         postContainer.innerHTML = '';
+        renderCards(currentState.slice(0, 10));
 
-        renderCards(currentChoice.slice(0, 10));
-   })
+    });
+
+    
+    for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', function (e) {
+        postContainer.removeChild(e.target.closest('.post'));
+        // need to remove card from currentState;
+
+        });
+
+    }
 };
