@@ -10,6 +10,7 @@ let dataStore = [];
 let currentState = [];
 let currentSortType = "newest";
 let selectedSort = [];
+let currentCountPage = 0;
 
 for(let i = 0; i < sortTags.length ; i++) {
 
@@ -24,9 +25,12 @@ for(let i = 0; i < sortTags.length ; i++) {
         }
         currentState = sortByTags(currentState, selectedSort, currentSortType);
         localStorage.setItem('sortTags', selectedSort);
+
+        currentCountPage = 0;
         
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
+        currentCountPage += 10;
     })
 }
 
@@ -96,7 +100,10 @@ function deleteListener(e) {
         currentState = currentState.filter((elem) => elem.id != selectedArticleId);
         dataStore = dataStore.filter((elem) => elem.id != selectedArticleId);
         postContainer.innerHTML = '';
+        currentCountPage = 0;
         renderCards(currentState.slice(0, 10));
+        currentCountPage += 10;
+        
 }
 
 function sortByTags (arr, sortTags, sortDateType) {
@@ -112,6 +119,13 @@ function sortByTags (arr, sortTags, sortDateType) {
    })
 }
 
+window.onscroll = _.debounce(event => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        renderCards(currentState.slice(currentCountPage, currentCountPage + 11))
+        currentCountPage += 10;
+    }
+  }, 300)
+
 function main(posts) {
     setSelectedSort();
     
@@ -125,8 +139,12 @@ function main(posts) {
 
     currentState = sortByTags(dataStore, selectedSort, currentSortType);
     renderCards(currentState.slice(0, 10));
+    currentCountPage += 10;
+    
 
     search.addEventListener('input', function (e) {
+
+        currentcountPage = 0;
 
         let searchWord = e.target.value.toLowerCase();
         let filtered = dataStore.filter((post) => {
@@ -137,24 +155,30 @@ function main(posts) {
  
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
+        currentCountPage += 10;
+        
 
     });
 
     newest.addEventListener('change', function (e) {
-
+        currentcountPage = 0;
         currentSortType = "newest";
         currentState = sortByTags(currentState, selectedSort, currentSortType);
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
+        currentCountPage += 10;
+        
 
     });
 
     oldest.addEventListener('change', function (e) {
-
+        currentcountPage = 0;
         currentSortType = 'oldest';
         currentState = sortByTags(currentState, selectedSort, currentSortType);
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
+        currentCountPage += 10;
+        
 
     });
 
