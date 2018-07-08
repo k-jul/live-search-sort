@@ -5,6 +5,7 @@ const oldest = document.getElementById('oldest');
 const deleteButtons = document.getElementsByClassName("btn-delete");
 let selectedTags = document.querySelectorAll(".checkbox:checked");
 
+let dataStore = [];
 let currentState = [];
 let currentSortType = "newest";
 
@@ -47,7 +48,25 @@ function renderCards(postsArray) {
     postsArray.forEach(element => {
         renderCard(element);
     });
+    addBtnDeleteListeners();
+    
 };
+
+function addBtnDeleteListeners() {
+    const deleteButtons = document.getElementsByClassName("btn-delete");
+
+    for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', deleteListener);
+    }
+}
+
+function deleteListener(e) {
+    let selectedArticleId = e.target.closest('.post').getAttribute('id');
+        currentState = currentState.filter((elem) => elem.id != selectedArticleId);
+        dataStore = dataStore.filter((elem) => elem.id != selectedArticleId);
+        postContainer.innerHTML = '';
+        renderCards(currentState.slice(0, 10));
+}
 
 function sortByDate(arr, sortType) {
 
@@ -71,13 +90,15 @@ function main(posts) {
         posts[i].id = i;
     }
 
-    currentState = sortByDate(posts, currentSortType);
+    dataStore = _.cloneDeep(posts);
+
+    currentState = sortByDate(dataStore, currentSortType);
     renderCards(currentState.slice(0, 10));
 
     search.addEventListener('input', function (e) {
 
         let searchWord = e.target.value.toLowerCase();
-        let filtered = posts.filter((post) => {
+        let filtered = dataStore.filter((post) => {
             return post.title.toLowerCase().includes(searchWord)
         });
 
@@ -106,15 +127,5 @@ function main(posts) {
 
     });
 
-    
-    for (let i = 0; i < deleteButtons.length; i++) {
-        deleteButtons[i].addEventListener('click', function (e) {
-        let selectedArticleId = e.target.closest('.post').getAttribute('id');
-        currentState = currentState.filter((elem) => elem.id != selectedArticleId);
-        posts = currentState;
-        postContainer.innerHTML = '';
-        renderCards(currentState.slice(0, 10));        
-        });
-
-    }
 };
+
