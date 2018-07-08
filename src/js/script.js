@@ -9,10 +9,11 @@ const sortTags = document.getElementsByClassName('checkbox');
 let dataStore = [];
 let currentState = [];
 let currentSortType = "newest";
-
 let selectedSort = [];
 
 for(let i = 0; i < sortTags.length ; i++) {
+
+
     sortTags[i].addEventListener('change', function(e) {
         if (_.isEmpty(currentState)) return;
         
@@ -22,10 +23,24 @@ for(let i = 0; i < sortTags.length ; i++) {
             selectedSort = selectedSort.filter((elem) => elem !== e.target.value);
         }
         currentState = sortByTags(currentState, selectedSort, currentSortType);
+        localStorage.setItem('sortTags', selectedSort);
         
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
     })
+}
+
+function setSelectedSort() {
+    let tags = localStorage.getItem('sortTags');
+    if (_.isNil(tags) || _.isEmpty(tags)) localStorage.setItem('sortTags', []);
+    else {
+        selectedSort = tags.split(',');
+    }
+    for (let i = 0; i < sortTags.length; i++) {
+        if (tags.includes(sortTags[i].value)) {
+            sortTags[i].checked = true;
+        }
+    }
 }
 
 fetch('https://api.myjson.com/bins/152f9j')
@@ -98,6 +113,8 @@ function sortByTags (arr, sortTags, sortDateType) {
 }
 
 function main(posts) {
+    setSelectedSort();
+    
 
     for(let i = 0; i< posts.length; i++) {
         posts[i].matchedTags = 0;
@@ -116,7 +133,7 @@ function main(posts) {
             return post.title.toLowerCase().includes(searchWord)
         });
 
-        currentState = sortByDate(filtered, currentSortType);
+        currentState = sortByTags(filtered, selectedSort, currentSortType);
  
         postContainer.innerHTML = '';
         renderCards(currentState.slice(0, 10));
