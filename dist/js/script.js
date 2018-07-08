@@ -24,6 +24,7 @@ function renderCard(postData) {
 
     let article = document.createElement('article');
     article.classList.add('post');
+    article.setAttribute('id', postData.id);
 
     article.innerHTML = `<i class="fas fa-times btn-delete"></i>
 
@@ -67,6 +68,7 @@ function main(posts) {
 
     for(let i = 0; i< posts.length; i++) {
         posts[i].matchedTags = 0;
+        posts[i].id = i;
     }
 
     currentState = sortByDate(posts, currentSortType);
@@ -107,9 +109,11 @@ function main(posts) {
     
     for (let i = 0; i < deleteButtons.length; i++) {
         deleteButtons[i].addEventListener('click', function (e) {
-        postContainer.removeChild(e.target.closest('.post'));
-        // need to remove card from currentState;
-
+        let selectedArticleId = e.target.closest('.post').getAttribute('id');
+        currentState = currentState.filter((elem) => elem.id != selectedArticleId);
+        posts = currentState;
+        postContainer.innerHTML = '';
+        renderCards(currentState.slice(0, 10));        
         });
 
     }
