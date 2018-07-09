@@ -35,8 +35,10 @@ for(let i = 0; i < sortTags.length ; i++) {
 
 function setSelectedSort() {
     let tags = localStorage.getItem('sortTags');
-    if (_.isNil(tags) || _.isEmpty(tags)) localStorage.setItem('sortTags', []);
-    else {
+    if (_.isNil(tags) || _.isEmpty(tags)) {
+        tags = [];
+        localStorage.setItem('sortTags', []);
+     } else {
         selectedSort = tags.split(',');
     }
     for (let i = 0; i < sortTags.length; i++) {

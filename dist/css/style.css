@@ -29,8 +29,10 @@ body {
       -ms-flex-align: center;
           align-items: center; }
 
-#search:focus {
-  outline: 1px solid #47ADE8; }
+#search {
+  margin-bottom: 10px; }
+  #search:focus {
+    outline: 1px solid #47ADE8; }
 
 .tags {
   display: -webkit-box;
@@ -49,8 +51,7 @@ body {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
-  width: 100%;
-  margin: 10px; }
+  width: 100%; }
   .tags-item {
     background-color: lightgray;
     border-radius: 5px;
@@ -59,7 +60,7 @@ body {
        -moz-box-sizing: border-box;
             box-sizing: border-box;
     font-size: 12px;
-    margin: 0 10px; }
+    margin: 0 10px 10px 10px; }
     .tags-item:hover {
       cursor: pointer; }
 

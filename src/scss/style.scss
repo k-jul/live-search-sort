@@ -20,8 +20,13 @@ body {
     align-items: center;
 }
 
-#search:focus {
-    outline: 1px solid #47ADE8;
+#search {
+    margin-bottom: 10px;
+
+    &:focus {
+        outline: 1px solid #47ADE8;
+
+    }
 }
 
 .tags {
@@ -30,7 +35,6 @@ body {
     align-content: center;
     flex-wrap: wrap;
     width: 100%;
-    margin: 10px;
 
     &-item {
 
@@ -39,7 +43,7 @@ body {
         padding: 3px 5px;
         box-sizing: border-box;
         font-size: 12px;
-        margin: 0 10px;
+        margin: 0 10px 10px 10px;
 
         &:hover {
             cursor:pointer;
