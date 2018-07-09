@@ -1,5 +1,5 @@
 {
-  "name": "Search",
+  "name": "live-search-sort",
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/k-jul/Blog.git"
+    "url": "git+https://github.com/k-jul/live-search-sort.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/k-jul/Blog/issues"
+    "url": "https://github.com/k-jul/live-search-sort.git/issues"
   },
-  "homepage": "https://github.com/k-jul/Blog#readme",
+  "homepage": "https://github.com/k-jul/live-search-sort.git#readme",
   "devDependencies": {
     "browser-sync": "^2.24.4",
     "gulp": "^3.9.1",
