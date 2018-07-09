@@ -1,10 +1,9 @@
 const search = document.getElementById('search');
 const postContainer = document.getElementById("post-container");
+const btnUp = document.getElementById('btn-up');
 const newest = document.getElementById('newest');
 const oldest = document.getElementById('oldest');
-const deleteButtons = document.getElementsByClassName("btn-delete");
 const sortTags = document.getElementsByClassName('checkbox');
-// let selectedTags = document.querySelectorAll(".checkbox:checked");
 
 let dataStore = [];
 let currentState = [];
@@ -23,13 +22,13 @@ for(let i = 0; i < sortTags.length ; i++) {
         } else {
             selectedSort = selectedSort.filter((elem) => elem !== e.target.value);
         }
-        currentState = sortByTags(currentState, selectedSort, currentSortType);
+        currentState = sortByTags(currentState, selectedSort);
         localStorage.setItem('sortTags', selectedSort);
 
         currentCountPage = 0;
         
         postContainer.innerHTML = '';
-        renderCards(currentState.slice(0, 10));
+        renderCards(currentState.slice(currentCountPage, currentCountPage+10));
         currentCountPage += 10;
     })
 }
@@ -101,16 +100,16 @@ function deleteListener(e) {
         dataStore = dataStore.filter((elem) => elem.id != selectedArticleId);
         postContainer.innerHTML = '';
         currentCountPage = 0;
-        renderCards(currentState.slice(0, 10));
+        renderCards(currentState.slice(currentCountPage, currentCountPage+10));
         currentCountPage += 10;
         
 }
 
-function sortByTags (arr, sortTags, sortDateType) {
-   return arr.sort((a, b) => {
+function sortByTags (arr, sortTags, sortDateType="newest") {
+    if (sortDateType == "newest") newest.checked = true;
+    return arr.sort((a, b) => {
        let tagsA = _.intersection(sortTags, a.tags.map(tag => tag.toLowerCase()));
        let tagsB = _.intersection(sortTags, b.tags.map(tag => tag.toLowerCase()));
-       
        if (tagsA.length === tagsB.length) {
            if (sortDateType == 'newest') return new Date(b.createdAt) - new Date(a.createdAt);
            else return new Date(a.createdAt) - new Date(b.createdAt);
@@ -120,67 +119,74 @@ function sortByTags (arr, sortTags, sortDateType) {
 }
 
 window.onscroll = _.debounce(event => {
+    if (window.scrollY<=0) btnUp.style.display = "none";
+    else btnUp.style.display = "block";
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        renderCards(currentState.slice(currentCountPage, currentCountPage + 11))
+        renderCards(currentState.slice(currentCountPage, currentCountPage + 10))
         currentCountPage += 10;
     }
-  }, 300)
+  }, 100)
 
 function main(posts) {
     setSelectedSort();
     
 
     for(let i = 0; i< posts.length; i++) {
-        posts[i].matchedTags = 0;
         posts[i].id = i;
     }
 
     dataStore = _.cloneDeep(posts);
 
-    currentState = sortByTags(dataStore, selectedSort, currentSortType);
-    renderCards(currentState.slice(0, 10));
+    currentState = sortByTags(dataStore, selectedSort);
+    renderCards(currentState.slice(currentCountPage, currentCountPage+10));
     currentCountPage += 10;
     
 
     search.addEventListener('input', function (e) {
 
-        currentcountPage = 0;
+        currentCountPage = 0;
 
         let searchWord = e.target.value.toLowerCase();
         let filtered = dataStore.filter((post) => {
             return post.title.toLowerCase().includes(searchWord)
         });
 
-        currentState = sortByTags(filtered, selectedSort, currentSortType);
+        currentState = sortByTags(filtered, selectedSort);
  
         postContainer.innerHTML = '';
-        renderCards(currentState.slice(0, 10));
+        renderCards(currentState.slice(currentCountPage, currentCountPage+10));
         currentCountPage += 10;
         
 
     });
 
     newest.addEventListener('change', function (e) {
-        currentcountPage = 0;
+        currentCountPage = 0;
         currentSortType = "newest";
         currentState = sortByTags(currentState, selectedSort, currentSortType);
         postContainer.innerHTML = '';
-        renderCards(currentState.slice(0, 10));
+        renderCards(currentState.slice(currentCountPage, currentCountPage+10));
         currentCountPage += 10;
         
 
     });
 
     oldest.addEventListener('change', function (e) {
-        currentcountPage = 0;
+        currentCountPage = 0;
         currentSortType = 'oldest';
         currentState = sortByTags(currentState, selectedSort, currentSortType);
-        postContainer.innerHTML = '';
-        renderCards(currentState.slice(0, 10));
+        postContainer.innerHTML = '';        
+        renderCards(currentState.slice(currentCountPage, currentCountPage+10));
         currentCountPage += 10;
-        
 
     });
+
+    btnUp.addEventListener('click', function () {
+        currentCountPage = 0; 
+        postContainer.innerHTML = '';        
+        renderCards(currentState.slice(currentCountPage, currentCountPage+10));
+        currentCountPage += 10;
+    })
 
 };
 

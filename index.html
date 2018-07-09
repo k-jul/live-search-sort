@@ -37,17 +37,19 @@
                 <label for = "culture" class = "tags-item">#culture</label>
 
                 <input type = "checkbox" id = "snowbiz" class = "checkbox" value='showbiz'>
-                <label for = "snowbiz" class = "tags-item">#snowbiz</label>
+                <label for = "snowbiz" class = "tags-item">#showbiz</label>
 
             </div>
             <div class="sort">
-                <h4 class = "sort-name">Sort by date:</h4>
-                newest <input type = "radio" name = "radio" id = "newest" checked>
-                oldest <input type = "radio" name = "radio" id = "oldest">
+                <input type = "radio" name = "radio" id = "newest" class="radio" checked>
+                <label for = "newest" class = "tags-item">newest</label>
+                <input type = "radio" name = "radio" id = "oldest" class="radio">
+                <label for = "oldest" class = "tags-item">oldest</label>
             </div>
         </header>
         <main id = "post-container">
         </main>
+        <a href = "#" id="btn-up"><i class="fas fa-angle-double-up"></i></a>
     </div>
     <script src="dist/js/script.js"></script>
 </body>
